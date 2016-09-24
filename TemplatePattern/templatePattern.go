@@ -8,11 +8,13 @@ type HummerModel interface {
 	stop()
 	alarm()
 	engineBoom()
-	// run()
+	isAlarm() bool
+	// set
 }
 
 //HummerH1Model 悍马类
 type HummerH1Model struct {
+	alarmFlag bool
 }
 
 func (hm *HummerH1Model) alarm() {
@@ -31,6 +33,14 @@ func (hm *HummerH1Model) stop() {
 	fmt.Println("悍马H1停车...")
 }
 
+func (hm *HummerH1Model) isAlarm() bool {
+	return hm.alarmFlag
+}
+
+func (hm *HummerH1Model) setalarm(flag bool) {
+	hm.alarmFlag = flag
+}
+
 //调用入口...
 func run(hm HummerModel) {
 	//发动..
@@ -38,12 +48,15 @@ func run(hm HummerModel) {
 	//引擎开始轰鸣
 	hm.engineBoom()
 	//看到一条狗挡路 就开始按喇叭 (喵喵喵?)
-	hm.alarm()
+	if hm.isAlarm() {
+		hm.alarm()
+	}
 	//停车...
 	hm.stop()
 }
 
 func main() {
 	hummer := new(HummerH1Model)
+	hummer.setalarm(true)
 	run(hummer)
 }
